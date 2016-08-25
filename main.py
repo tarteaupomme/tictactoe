@@ -8,13 +8,14 @@ from flask_socketio import SocketIO, emit, join_room, rooms
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "ggyughlml655khhíjnge55paguitfé'(iij"
+chat = False  # active le chat
 
 socket = SocketIO(app)
 
 
 @app.route('/')
 def index():
-    global client_number, li_game
+    global client_number, li_game, chat
     client_number += 1
     session["number"] = client_number
     client_number_old = client_number
@@ -26,7 +27,7 @@ def index():
         joue = 1
     print("Nouveau joueur numero: {}".format(client_number_old))
     return render_template('morpion.html', joue=joue,
-                            client_number=client_number_old)
+                            client_number=client_number_old, chat=chat)
 
 
 ###############################################################################
@@ -64,13 +65,13 @@ def joue(msg):
 # chat
 ###############################################################################
 
-
-@socket.on('envoi')
-def envoi(msg):
-    msg = msg["msg"]
-    joueur = session["number"]
-    partie = str(joueur // 2)
-    emit('recoi', {"msg": msg, "pers": ["X", "O"][joueur % 2]}, room=partie)
+if chat:
+    @socket.on('envoi')
+    def envoi(msg):
+        msg = msg["msg"]
+        joueur = session["number"]
+        partie = str(joueur // 2)
+        emit('recoi', {"msg": msg, "pers": ["X", "O"][joueur % 2]}, room=partie)
 
 
 if __name__ == '__main__':

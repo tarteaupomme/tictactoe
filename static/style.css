@@ -61,7 +61,7 @@ footer
     position: absolute;
     right: 20px;
     bottom: 200px;
-    border: 1px solid black;
+    border: 3px solid black;
     border-radius: 5px;
     padding: 10px;
     height: 500px;
@@ -77,6 +77,32 @@ label
 {
     font-weight: bold;
 }
+
+#ligne
+{
+    //display: table-row;
+    width: 300px;
+    //float: top;
+}
+
+#mess_X
+{
+    //background-color: #FF0000;
+    //border: 1px solid black;
+    //border-radius: 5px;
+    padding: 5px;
+    text-align: right;
+}
+
+#mess_O
+{
+    //background-color: #0900FF;
+    //border: 1px solid black;
+    //border-radius: 5px;
+    padding: 5px;
+    text-align: left;
+}
+
 
 
 

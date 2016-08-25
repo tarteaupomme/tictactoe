@@ -2,20 +2,27 @@ var socket = io.connect('http://' + document.domain + ':' + location.port);
 
 var entree = document.getElementById("entree");
 
-var cadre = document.getElementById("chat");
+var cadre = document.getElementById("discussion");
 
 
 function ecrit(text, pers){
     var mess = document.createElement('p');
+    var divi = document.createElement("div");
+    divi.id = "ligne";
     if (pers=="X"){
-        mess.style.textAlign = "right";
+        mess.id = "mess_X";
+        divi.style.right = "5px";
     }
     else{
-        mess.style.textAlign = "left";
+        mess.id = "mess_O";
+        divi.style.left = "5px";
     }
-    cadre.appendChild(mess);
+
+    divi.appendChild(mess);
+    cadre.insertBefore(divi, divi_old);
     var messText = document.createTextNode(text);
     mess.appendChild(messText);
+    var divi_old = divi;
 }
 
 

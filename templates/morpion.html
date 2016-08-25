@@ -13,11 +13,20 @@
     </header>
     <h2 id="chargement">Bienvenue</h1>
     <div align="center"><canvas id="myCanvas" width="600" height="600"></canvas></div>
+
+    {% if chat %}
     <div id="chat">
       <label>message: </label><input onkeypress="envoi(event)" name="champ" id="entree" type="text" maxlength="50"/>
+      <div id="discussion"></div>
     </div>
+    {% endif %}
+
     <script language="JavaScript" src="{{url_for('static', filename='jeu.js')}}"></script>
+
+    {%if chat %}
     <script type="text/javascript" src="{{url_for('static', filename='chat.js')}}"></script>
+    {% endif %}
+
     <h3 class="rejouer"><a href="{{url_for("index")}}">Rejouer</a></h3>
     <footer>
       <p>Vous êtes: {{["X", "O"][joue]}}<br/>numero joueur: {{client_number}}</p>
