@@ -13,7 +13,11 @@
     </header>
     <h2 id="chargement">Bienvenue</h1>
     <div align="center"><canvas id="myCanvas" width="600" height="600"></canvas></div>
+    <div id="chat">
+      <label>message: </label><input onkeypress="envoi(event)" name="champ" id="entree" type="text" maxlength="50"/>
+    </div>
     <script language="JavaScript" src="{{url_for('static', filename='jeu.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='chat.js')}}"></script>
     <h3 class="rejouer"><a href="{{url_for("index")}}">Rejouer</a></h3>
     <footer>
       <p>Vous êtes: {{["X", "O"][joue]}}<br/>numero joueur: {{client_number}}</p>

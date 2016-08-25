@@ -19,6 +19,7 @@ canvas
     border-radius: 10px;
     border-color: black;
     border-style: solid;
+    z-index: 10;
 }
 
 .rejouer
@@ -38,6 +39,7 @@ header
     border-radius: 5px;
     background-color: #F0FF00;
     padding: 5px;
+    z-index: 0;
 }
 
 footer
@@ -51,5 +53,31 @@ footer
     bottom: 5px;
     text-align: center;
     min-height: 30px;
+    z-index: 0;
 }
+
+#chat
+{
+    position: absolute;
+    right: 20px;
+    bottom: 200px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    height: 500px;
+    width: 300px;
+    overflow: hidden;
+    display: block;
+    z-index: 5;
+    opacity: 1;
+    background-color: #EEEEEC;
+}
+
+label
+{
+    font-weight: bold;
+}
+
+
+
 

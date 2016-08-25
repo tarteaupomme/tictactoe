@@ -29,9 +29,13 @@ def index():
                             client_number=client_number_old)
 
 
+###############################################################################
+# jeu
+###############################################################################
+
 @socket.on('connecte')
 def connecte():
-    """permet de joindre le client a sa partie"""
+    """permet de joindre le client a sa partie (room)"""
     session["number"] = client_number
     join_room(str(client_number // 2))
 
@@ -55,6 +59,18 @@ def joue(msg):
                 else:
                     emit("gagne", {"pers": ["X", "O"][joueur % 2]},
                          room=str(joueur // 2))
+
+###############################################################################
+# chat
+###############################################################################
+
+
+@socket.on('envoi')
+def envoi(msg):
+    msg = msg["msg"]
+    joueur = session["number"]
+    partie = str(joueur // 2)
+    emit('recoi', {"msg": msg, "pers": ["X", "O"][joueur % 2]}, room=partie)
 
 
 if __name__ == '__main__':
