@@ -7,7 +7,7 @@ from flask_socketio import SocketIO, emit, join_room, rooms
 
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "ggyughlml655khhíjnge55paguitfé'(iij"
+app.config["SECRET_KEY"] = "secret_key"
 
 socket = SocketIO(app)
 
