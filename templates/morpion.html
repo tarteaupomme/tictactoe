@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <title>Morpion</title>
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css" />
+    <span id="joue" joue={{joue}}></span>
+    <script type="text/javascript" src="{{url_for('static', filename='socket.io.min.js')}}"></script>
+  </head>
+  <body>
+    <header>
+      <h1>Jeu de Morpion</h1>
+    </header>
+    <h2 id="chargement">Bienvenue</h1>
+    <div align="center"><canvas id="myCanvas" width="600" height="600"></canvas></div>
+    <script language="JavaScript" src="{{url_for('static', filename='jeu.js')}}"></script>
+    <h3 class="rejouer"><a href="{{url_for("index")}}">Rejouer</a></h3>
+    <footer>
+      <p>Vous êtes: {{["X", "O"][joue]}}<br/>numero joueur: {{client_number}}</p>
+    </footer>
+  </body>
+</html>
