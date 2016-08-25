@@ -7,7 +7,7 @@ from flask_socketio import SocketIO, emit, join_room, rooms
 
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "secret_key"
+app.config["SECRET_KEY"] = "ggyughlml655khhíjnge55paguitfé'(iij"
 
 socket = SocketIO(app)
 
@@ -31,13 +31,14 @@ def index():
 
 @socket.on('connecte')
 def connecte():
+    """permet de joindre le client a sa partie"""
     session["number"] = client_number
     join_room(str(client_number // 2))
-    print(rooms())
 
 
 @socket.on("joue")
 def joue(msg):
+    """appeller lorsqu'un joueur a joue"""
     x = msg['x']
     y = msg['y']
     joueur = session["number"]
@@ -58,5 +59,5 @@ def joue(msg):
 
 if __name__ == '__main__':
     client_number = -1
-    li_game = []
+    li_game = []  # liste des parties
     socket.run(app, host="192.168.1.14", port=42629, debug=True)

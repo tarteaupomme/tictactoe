@@ -34,7 +34,7 @@ class Game:
         if dia == ['O', 'O', 'O']:
             return "O"
 
-        li = []
+        li = []  # match nul
         [li.extend(i) for i in self.grille]
         if not "." in li:
             return "N"
