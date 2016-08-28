@@ -4,10 +4,13 @@ var entree = document.getElementById("entree");
 
 var cadre = document.getElementById("discussion");
 
+var divi_old;
 
 function ecrit(text, pers){
     var mess = document.createElement('p');
     var divi = document.createElement("div");
+    var messText = document.createTextNode(text);
+    mess.appendChild(messText);
     divi.id = "ligne";
     if (pers=="X"){
         mess.id = "mess_X";
@@ -20,9 +23,7 @@ function ecrit(text, pers){
 
     divi.appendChild(mess);
     cadre.insertBefore(divi, divi_old);
-    var messText = document.createTextNode(text);
-    mess.appendChild(messText);
-    var divi_old = divi;
+    divi_old = divi;
 }
 
 
