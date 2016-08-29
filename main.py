@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from game import Game
-from flask import Flask, render_template, session
-from flask_socketio import SocketIO, emit, join_room, rooms
+from flask import Flask, render_template, session, request
+from flask_socketio import SocketIO, emit, join_room
 
 
 app = Flask(__name__)
@@ -13,26 +13,44 @@ chat = True  # active le chat
 socket = SocketIO(app)
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
     global client_number, li_game, chat
-    client_number += 1
-    session["number"] = client_number
-    client_number_old = client_number
-    if client_number % 2 == 0:
-        li_game.append(Game(grille=[['.', '.', '.'] for i in range(3)]))
-        joue = 0
-    else:
-        socket.emit("connecte", broadcast=True)
-        joue = 1
-    print("Nouveau joueur numero: {}".format(client_number_old))
-    return render_template('morpion.html', joue=joue,
-                            client_number=client_number_old, chat=chat)
+    if request.method == "GET":
+        return render_template('connexion.html')
+    elif request.method == "POST":
+        client_number += 1
+        session["number"] = client_number
+        pseudo = request.form['pseudo']
+        session["pseudo"] = pseudo
+        client_number_old = client_number
+        if client_number % 2 == 0:
+            li_game.append(Game(grille=[['.', '.', '.'] for i in range(3)]))
+            joue = 0
+        else:
+            socket.emit("connecte", broadcast=True)
+            joue = 1
+        print("Nouveau joueur numero: {}; pseudo: {}".format(client_number_old,
+                                                             pseudo))
+        return render_template('morpion.html', joue=joue,
+                                client_number=client_number_old, chat=chat,
+                                pseudo=pseudo)
 
 
 ###############################################################################
 # jeu
 ###############################################################################
+
+
+@socket.on('rejoue')
+def rejouer():
+    client_number = session["number"]
+    num_partie = client_number // 2
+    emit('rejouer', {"gagnant": li_game[num_partie].verif()},
+         room=str(num_partie))
+    #on remet la partie a zero
+    li_game[num_partie] = Game(grille=[['.', '.', '.'] for i in range(3)])
+
 
 @socket.on('connecte')
 def connecte():
@@ -65,13 +83,15 @@ def joue(msg):
 # chat
 ###############################################################################
 
+
 if chat:
     @socket.on('envoi')
     def envoi(msg):
         msg = msg["msg"]
         joueur = session["number"]
         partie = str(joueur // 2)
-        emit('recoi', {"msg": msg, "pers": ["X", "O"][joueur % 2]}, room=partie)
+        emit('recoi', {"msg": msg, "pers": ["X", "O"][joueur % 2],
+             'pseudo': session['pseudo']}, room=partie)
 
 
 if __name__ == '__main__':

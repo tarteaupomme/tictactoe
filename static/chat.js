@@ -4,8 +4,8 @@ var entree = document.getElementById("entree");
 
 var textarea = document.getElementById("discussion");
 
-function ecrit(text, pers){
-    textarea.value  = pers + " dit : " + text + "\n" + textarea.value;
+function ecrit(text, pers, pseudo){
+    textarea.value  = pseudo + " (" + pers + ")" + " dit : " + text + "\n" + textarea.value;
 }
 
 
@@ -26,7 +26,8 @@ function envoi(event){
 socket.on('recoi', function(data){
     msg = data.msg;
     pers = data.pers;
-    ecrit(msg, pers);
+    pseu = data.pseudo;
+    ecrit(msg, pers, pseu);
 });
 
 

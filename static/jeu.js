@@ -1,5 +1,5 @@
 function grille(context, taille_x, taille_y){
-    context.fillStyle = '#FFFFFF';
+    context.srokeStyle = 'black';
     context.strokeRect(0, 0, parseInt(taille_x / 3), taille_y);
     context.strokeRect(0, 0, parseInt((2 / 3)* taille_x), taille_y);
     context.strokeRect(0, 0, taille_x, taille_y);
@@ -75,8 +75,20 @@ function jouer(){
     });
 
     elem.addEventListener('click', clique);
+
+    socket.on('rejouer', rejouer);
 }
 
+function rejouer(data){
+    var gagnant = data.gagnant;
+    context.clearRect(0, 0, elem.width, elem.height);
+    grille(context, elem.width, elem.height);
+
+}
+
+function veut_rejouer(){
+    socket.emit('rejoue');
+}
 
 
 var elem = document.getElementById('myCanvas');
@@ -88,6 +100,8 @@ var socket = io.connect('http://' + document.domain + ':' + location.port);
 var adv_present = parseInt(document.getElementById("joue").getAttribute("joue"));
 
 var chargement = document.getElementById("chargement");
+
+var pseudo = document.getElementById("pseudo").getAttribute('pseudo');
 
 chargement.innerHTML = "En attente d'un adversaire";
 
