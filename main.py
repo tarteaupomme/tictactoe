@@ -8,7 +8,7 @@ from flask_socketio import SocketIO, emit, join_room, rooms
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "ggyughlml655khhíjnge55paguitfé'(iij"
-chat = False  # active le chat
+chat = True  # active le chat
 
 socket = SocketIO(app)
 

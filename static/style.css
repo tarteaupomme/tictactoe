@@ -73,34 +73,18 @@ footer
     background-color: #EEEEEC;
 }
 
+#discussion
+{
+    margin: 5px;
+    height: 450px;
+    width: 290px;
+    background-color: #EEEEEC;
+    resize: none;
+}
+
 label
 {
     font-weight: bold;
-}
-
-#ligne
-{
-    //display: table-row;
-    width: 300px;
-    //float: top;
-}
-
-#mess_X
-{
-    background-color: #FF0000;
-    border: 1px solid black;
-    border-radius: 5px;
-    text-align: right;
-    padding: 2px 2px;
-}
-
-#mess_O
-{
-    background-color: #0900FF;
-    border: 1px solid black;
-    border-radius: 5px;
-    text-align: left;
-    padding: 2px 2px;
 }
 
 
