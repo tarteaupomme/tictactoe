@@ -4,6 +4,7 @@ function grille(context, taille_x, taille_y){
     context.strokeRect(0, 0, parseInt((2 / 3)* taille_x), taille_y);
     context.strokeRect(0, 0, taille_x, taille_y);
     context.strokeRect(0, parseInt(taille_y / 3), taille_x, parseInt(taille_y / 3));
+    context.stroke();
 }
 
 function trouve_coor(x, y){
@@ -83,6 +84,7 @@ function rejouer(data){
     var gagnant = data.gagnant;
     context.clearRect(0, 0, elem.width, elem.height);
     grille(context, elem.width, elem.height);
+    elem.style.cursor = ["crosshair", "progress"][adv_present];
 
 }
 
