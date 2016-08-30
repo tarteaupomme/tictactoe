@@ -31,6 +31,7 @@ canvas
     text-align: center;
     margin: auto;
     margin-top: 20px;
+    margin-bottom: 10px;
     cursor: pointer;
 }
 
@@ -81,6 +82,7 @@ footer
     width: 290px;
     background-color: #F7F7F5;
     resize: none;
+    text-color: black;
 }
 
 label

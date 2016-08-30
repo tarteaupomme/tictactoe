@@ -1,14 +1,41 @@
+var elem = document.getElementById('myCanvas');
+var context = elem.getContext('2d');
+
+var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+var adv_present;
+
+var chargement = document.getElementById("chargement");
+
+var pseudo = document.getElementById("pseudo").getAttribute('pseudo');
+
 function grille(context, taille_x, taille_y){
-    context.srokeStyle = 'black';
+    context.srokeStyle = '#000000';
     context.strokeRect(0, 0, parseInt(taille_x / 3), taille_y);
     context.strokeRect(0, 0, parseInt((2 / 3)* taille_x), taille_y);
     context.strokeRect(0, 0, taille_x, taille_y);
     context.strokeRect(0, parseInt(taille_y / 3), taille_x, parseInt(taille_y / 3));
-    context.stroke();
+}
+
+function init(){
+    grille(context, elem.width, elem.height);
+    socket.emit('connecte', function(data){
+        adv_present = data.adv_present;
+        if (adv_present){
+            elem.style.cursor = "progress";
+            chargement.innerHTML = "L'adversaire joue, veuillez patienter";
+            jouer();
+        }
+        else{
+            elem.style.cursor = "crosshair";
+            chargement.innerHTML = "A vous de jouer";
+            socket.on("connecte", jouer);
+        }
+    });
 }
 
 function trouve_coor(x, y){
-    return [parseInt(x/200),parseInt(y/200)];
+        return [parseInt(x/200),parseInt(y/200)];
 }
 
 function affiche(context, taille_x, taille_y, x, y, pers){
@@ -20,7 +47,6 @@ function affiche(context, taille_x, taille_y, x, y, pers){
 
         context.moveTo(x * taille_x / 3 + 20, y * taille_y/3 + 20);
         context.lineTo((x + 1) * taille_x / 3 - 20, (y + 1) * taille_y/3 - 20);
-        //context.stroke();
 
         context.moveTo(x * taille_x / 3 + 20, (y +1) * taille_y/3 - 20);
         context.lineTo((x + 1) * taille_x / 3 - 20, y * taille_y/3 + 20);
@@ -35,6 +61,11 @@ function affiche(context, taille_x, taille_y, x, y, pers){
         context.stroke();
     }
     context.lineWidth = 1;
+    context.strokeStyle = "#000000";
+}
+
+function clear(context, elem){
+    context.clearRect(0, 0, elem.width, elem.height);
 }
 
 function clique(event){
@@ -60,17 +91,17 @@ function jouer(){
         }
         else{
             elem.style.cursor = "crosshair";
-            chargement.innerHTML = "A vous de jouer"
+            chargement.innerHTML = "A vous de jouer";
         }
     });
 
 
     socket.on('gagne', function(msg){
         if (msg.pers == "N"){
-            chargement.innerHTML = "Match nul !!"
+            chargement.innerHTML = "Match nul !!";
         }
         else{
-            chargement.innerHTML = msg.pers + " a gagné"
+            chargement.innerHTML = msg.pers + " a gagné";
         }
         elem.removeEventListener('click', clique);
     });
@@ -82,9 +113,9 @@ function jouer(){
 
 function rejouer(data){
     var gagnant = data.gagnant;
-    context.clearRect(0, 0, elem.width, elem.height);
-    grille(context, elem.width, elem.height);
-    elem.style.cursor = ["crosshair", "progress"][adv_present];
+    clear(context, elem);
+    init();
+    elem.style.cursor = adv_present ? "crosshair" : "progress";
 
 }
 
@@ -93,30 +124,9 @@ function veut_rejouer(){
 }
 
 
-var elem = document.getElementById('myCanvas');
-var context = elem.getContext('2d');
-grille(context, elem.width, elem.height); // initialisation de la grille
-
-var socket = io.connect('http://' + document.domain + ':' + location.port);
-
-var adv_present = parseInt(document.getElementById("joue").getAttribute("joue"));
-
-var chargement = document.getElementById("chargement");
-
-var pseudo = document.getElementById("pseudo").getAttribute('pseudo');
-
-chargement.innerHTML = "En attente d'un adversaire";
-
-socket.emit('connecte');
 
 
-if (adv_present){
-    elem.style.cursor = "progress";
-    chargement.innerHTML = "L'adversaire joue, veuillez patienter";
-    jouer();
-}
-else{
-    elem.style.cursor = "crosshair";
-    chargement.innerHTML = "A vous de jouer";
-    socket.on("connecte", jouer);
-}
+
+init();
+
+

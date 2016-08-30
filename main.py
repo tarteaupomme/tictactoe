@@ -46,17 +46,21 @@ def index():
 def rejouer():
     client_number = session["number"]
     num_partie = client_number // 2
-    emit('rejouer', {"gagnant": li_game[num_partie].verif()},
-         room=str(num_partie))
+    print("\npartie num° " + str(num_partie) + " remise a zero")
     #on remet la partie a zero
     li_game[num_partie] = Game(grille=[['.', '.', '.'] for i in range(3)])
+    print(li_game[num_partie])
+    emit('rejouer', {"gagnant": li_game[num_partie].verif()},
+         room=str(num_partie))
 
 
 @socket.on('connecte')
 def connecte():
     """permet de joindre le client a sa partie (room)"""
-    session["number"] = client_number
+    client_number = session['number']
     join_room(str(client_number // 2))
+    return {"adv_present": 1 - int(li_game[client_number // 2].current_player
+                                    == client_number % 2)}
 
 
 @socket.on("joue")
@@ -65,6 +69,7 @@ def joue(msg):
     x = msg['x']
     y = msg['y']
     joueur = session["number"]
+    print("tentative de jouer de " + str(joueur))
     if joueur % 2 == li_game[joueur // 2].current_player:
         print("{} a jouer en {},{}".format(joueur, x, y))
         if li_game[joueur // 2].jouer(x, y) is None:

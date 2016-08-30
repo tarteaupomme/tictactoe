@@ -54,6 +54,7 @@ class Game:
         ch = ""
         for i in self.grille:
             ch += str(i) + "\n"
+        ch += "current_player: " + ["X", "O"][self.current_player] + "\n"
         return ch
 
     def __repr__(self):

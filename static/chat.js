@@ -9,10 +9,6 @@ function ecrit(text, pers, pseudo){
 }
 
 
-
-
-
-
 function envoi(event){
     if (event.keyCode == 13){
         msg = event.target.value;
