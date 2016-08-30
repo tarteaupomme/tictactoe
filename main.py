@@ -48,7 +48,9 @@ def rejouer():
     num_partie = client_number // 2
     print("\npartie num° " + str(num_partie) + " remise a zero")
     #on remet la partie a zero
-    li_game[num_partie] = Game(grille=[['.', '.', '.'] for i in range(3)])
+    li_game[num_partie].grille = [['.', '.', '.'] for i in range(3)]
+    li_game[num_partie].commence = 1 - li_game[num_partie].commence
+    li_game[num_partie].current_player = li_game[num_partie].commence
     print(li_game[num_partie])
     emit('rejouer', {"gagnant": li_game[num_partie].verif()},
          room=str(num_partie))
@@ -59,8 +61,8 @@ def connecte():
     """permet de joindre le client a sa partie (room)"""
     client_number = session['number']
     join_room(str(client_number // 2))
-    return {"adv_present": 1 - int(li_game[client_number // 2].current_player
-                                    == client_number % 2)}
+    return {"adv_present": abs(li_game[client_number // 2].commence
+                          - (client_number % 2))}
 
 
 @socket.on("joue")
@@ -97,6 +99,13 @@ if chat:
         partie = str(joueur // 2)
         emit('recoi', {"msg": msg, "pers": ["X", "O"][joueur % 2],
              'pseudo': session['pseudo']}, room=partie)
+
+
+@app.errorhandler(500)
+@app.errorhandler(404)
+@app.errorhandler(400)
+def error(e):
+    return render_template('error.html', error=e)
 
 
 if __name__ == '__main__':

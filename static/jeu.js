@@ -5,6 +5,9 @@ var socket = io.connect('http://' + document.domain + ':' + location.port);
 
 var adv_present;
 
+var moi = parseInt(document.getElementById("joue").getAttribute("joue"));
+
+
 var chargement = document.getElementById("chargement");
 
 var pseudo = document.getElementById("pseudo").getAttribute('pseudo');
@@ -29,7 +32,7 @@ function init(){
         else{
             elem.style.cursor = "crosshair";
             chargement.innerHTML = "A vous de jouer";
-            socket.on("connecte", jouer);
+            jouer();
         }
     });
 }
@@ -85,7 +88,7 @@ function jouer(){
         var y = parseInt(msg.y);
         var pers = msg.pers;
         affiche(context, elem.width, elem.height, x, y, pers);
-        if (pers == ["X", "O"][adv_present]){
+        if (pers == ["X", "O"][moi]){
             elem.style.cursor = "progress";
             chargement.innerHTML = "L'adversaire joue, veuillez patienter";
         }
@@ -122,9 +125,6 @@ function rejouer(data){
 function veut_rejouer(){
     socket.emit('rejoue');
 }
-
-
-
 
 
 init();

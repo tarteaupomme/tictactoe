@@ -7,6 +7,7 @@ class Game:
         self.grille = grille
         self.current_player = current_player
         self.dernier_coup = None
+        self.commence = 0
 
     def verif(self):
         for line in self.grille:  # en ligne
