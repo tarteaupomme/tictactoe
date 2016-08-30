@@ -22,6 +22,24 @@
     </div>
     {% endif %}
 
+    <div id="score">
+      <table>
+        <caption>
+          <h3>
+            <strong>Score :</strong>
+          </h3>
+        </caption>
+        <tr>
+          <td><h4>Moi</h4></td>
+          <td><h4 id="nom_adv">{{adversaire}}</h4></td>
+        </tr>
+        <tr>
+          <td><p id="score_moi">0</p></td>
+          <td><p id="score_adv">0</p></td>
+        </tr>
+      </table>
+    </div>
+
     <script language="JavaScript" src="{{url_for('static', filename='jeu.js')}}"></script>
 
     {%if chat %}

@@ -2,12 +2,14 @@
 
 
 class Game:
-    def __init__(self, grille=[['.', '.', '.'] for i in range(3)],
-                                                current_player=0):
+    def __init__(self, pseudos, grille=[['.', '.', '.'] for i in range(3)],
+                                                        current_player=0):
         self.grille = grille
         self.current_player = current_player
         self.dernier_coup = None
         self.commence = 0
+        self.score = [0, 0]
+        self.pseudos = pseudos
 
     def verif(self):
         for line in self.grille:  # en ligne

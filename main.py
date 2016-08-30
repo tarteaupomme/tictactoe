@@ -25,11 +25,13 @@ def index():
         session["pseudo"] = pseudo
         client_number_old = client_number
         if client_number % 2 == 0:
-            li_game.append(Game(grille=[['.', '.', '.'] for i in range(3)]))
+            li_game.append(Game([pseudo, "?"],
+                                grille=[['.', '.', '.'] for i in range(3)]))
             joue = 0
         else:
             socket.emit("connecte", broadcast=True)
             joue = 1
+            li_game[client_number // 2].pseudos[1] = pseudo
         print("Nouveau joueur numero: {}; pseudo: {}".format(client_number_old,
                                                              pseudo))
         return render_template('morpion.html', joue=joue,
@@ -61,8 +63,14 @@ def connecte():
     """permet de joindre le client a sa partie (room)"""
     client_number = session['number']
     join_room(str(client_number // 2))
+    adversaire = li_game[client_number // 2].pseudos[1 - (client_number % 2)]
+    print("\n\ndgfgfnlkfg : " + str(li_game[client_number // 2].pseudos))
+    socket.emit("nom_adversaire",
+                {"nom_adversaire": li_game[client_number // 2].pseudos},
+                room=str(client_number // 2))
     return {"adv_present": abs(li_game[client_number // 2].commence
-                          - (client_number % 2))}
+                          - (client_number % 2)),
+            "nom_adversaire": adversaire}
 
 
 @socket.on("joue")
@@ -83,7 +91,9 @@ def joue(msg):
                     emit("gagne", {"pers": "N"},
                          room=str(joueur // 2))
                 else:
-                    emit("gagne", {"pers": ["X", "O"][joueur % 2]},
+                    li_game[joueur // 2].score[joueur % 2] += 1
+                    emit("gagne", {"pers": ["X", "O"][joueur % 2],
+                         "score": li_game[joueur // 2].score[joueur % 2]},
                          room=str(joueur // 2))
 
 ###############################################################################

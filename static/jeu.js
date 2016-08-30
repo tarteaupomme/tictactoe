@@ -7,6 +7,13 @@ var adv_present;
 
 var moi = parseInt(document.getElementById("joue").getAttribute("joue"));
 
+var score = {moi: 0, adv: 0};
+
+var score_moi = document.getElementById("score_moi");
+var score_adv = document.getElementById("score_adv");
+
+var nom_adv = document.getElementById("nom_adv");
+
 
 var chargement = document.getElementById("chargement");
 
@@ -22,6 +29,9 @@ function grille(context, taille_x, taille_y){
 
 function init(){
     grille(context, elem.width, elem.height);
+    socket.on('nom_adversaire', function(data){
+        nom_adv.innerHTML = data.nom_adversaire[1 - moi];
+    });
     socket.emit('connecte', function(data){
         adv_present = data.adv_present;
         if (adv_present){
@@ -105,6 +115,14 @@ function jouer(){
         }
         else{
             chargement.innerHTML = msg.pers + " a gagné";
+            if (msg.pers == ["X", "O"][moi]){
+                score.moi = msg.score;
+            }
+            else{
+                score.adv = msg.score;
+            }
+            score_moi.innerHTML = score.moi;
+            score_adv.innerHTML = score.adv;
         }
         elem.removeEventListener('click', clique);
     });
