@@ -87,12 +87,10 @@ function clique(event){
     coor = trouve_coor(x, y);
     x = coor[0];
     y = coor[1];
-    chargement.innerHTML = "Envoie au serveur, veuillez patienter...";
     socket.emit("joue", {x: x, y: y});
 }
 
 function jouer(){
-    chargement.innerHTML = "adversaire conecté";
     socket.on("jouer", function(msg){
         var x = parseInt(msg.x);
         var y = parseInt(msg.y);
